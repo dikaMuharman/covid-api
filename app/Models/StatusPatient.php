@@ -9,8 +9,10 @@ class StatusPatient extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['status'];
+
     public function patient()
     {
-        return $this->belongsTo(StatusPatient::class);
+        return $this->hasMany(Patient::class);
     }
 }

@@ -9,10 +9,10 @@ class Patient extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama', 'phone', 'alamat', 'status_patient_id' ,'in_date_at', 'out_date_at'];
+    protected $fillable = ['name', 'phone', 'alamat', 'status_patient_id' ,'in_date_at', 'out_date_at'];
 
-    public function StatusPatient() 
+    public function statusPatient() 
     {
-        return $this->hasMany(Patient::class);
+        return $this->belongsTo(StatusPatient::class);
     }
 }
