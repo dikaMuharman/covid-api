@@ -19,7 +19,7 @@ class CreatePatientsTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->text('alamat');
-            $table->foreignIdFor(StatusPatient::class);
+            $table->foreignIdFor(StatusPatient::class)->constrained('status_patients');
             $table->date('in_date_at');
             $table->date('out_date_at')->nullable(true);
             $table->timestamps();
