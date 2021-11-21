@@ -10,6 +10,23 @@ use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
+    /**
+     * get all data by Status patient
+     *
+     * @param int $idStatus
+     * @return \Illuminate\Http\Response
+     */
+    public function getPatientByStatus($idStatus)
+    {  
+       return Patient::where('status_patient_id',$idStatus)->get();
+    }
+
+    /**
+     * get id status patient
+     *
+     * @param string $statusName
+     * @return \Illuminate\Http\Response
+     */
     public function getIdStatusPatient($statusName)
     {
         $statusPatient = StatusPatient::where('status', $statusName)->first();
@@ -146,4 +163,80 @@ class PatientController extends Controller
         $patient->delete();
         return response()->json(['message' => 'Resource is delete successfully'], 200);
     }
+
+    /**
+     * Search Resource by name
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        $patient = DB::table('patients')->where('name','like',"%".$name."%")->join('status_patients','patients.status_patient_id','=','status_patients.id')->get(['name','phone','status','alamat','in_date_at','out_date_at']);
+
+        if (count($patient) == 0) {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+
+        $response = [
+            'message' => 'Get searched resource',
+            'data' => $patient
+        ];
+        return response()->json($response, 200);
+    }
+
+    /**
+     * Get data by status positive
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function positive()
+    {
+        $patients = $this->getPatientByStatus(1);
+
+        $data = [
+            'message' => 'The request succeeded',
+            'total' => count($patients),
+            'data' => $patients,
+        ];
+        
+        return response()->json($data, 200);
+    }
+
+    /**
+     * Get data by status death
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function dead()
+    {
+        $patients = $this->getPatientByStatus(2);
+
+        $data = [
+            'message' => 'The request succeeded',
+            'total' => count($patients),
+            'data' => $patients,
+        ];
+        
+        return response()->json($data, 200);
+    }
+
+    /**
+     * Get data by status recovered
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function recovered()
+    {
+        $patients = $this->getPatientByStatus(3);
+
+        $data = [
+            'message' => 'The request succeeded',
+            'total' => count($patients),
+            'data' => $patients,
+        ];
+        
+        return response()->json($data, 200);
+    }
+
 }

@@ -11,6 +11,8 @@ class Patient extends Model
 
     protected $fillable = ['name', 'phone', 'alamat', 'status_patient_id' ,'in_date_at', 'out_date_at'];
 
+    protected $hidden = ['status_patient_id','created_at','updated_at'];
+
     public function statusPatient() 
     {
         return $this->belongsTo(StatusPatient::class);
